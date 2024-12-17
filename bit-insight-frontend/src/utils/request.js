@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { useAuthStore } from '../stores';
 
-let authStore = useAuthStore();
-
 const config = {
-    baseURL: process.env.baseURL || process.env.apiUrl || "",
+    baseURL: import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_URL || "",
     timeout: 1000,
 };
 
@@ -17,6 +15,7 @@ const request = axios.create(config);
 request.interceptors.request.use(
   // Do something before request is sent
   function (config) {
+    let authStore = useAuthStore();
     const token = authStore.token;
     if (token) {
       config.headers.Authorization = token.token_type + ' ' + token.access_token;

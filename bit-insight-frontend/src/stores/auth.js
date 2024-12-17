@@ -13,9 +13,9 @@ export const useAuthStore = defineStore('auth', {
   },
   // actions
   actions: {
-    async login(username, password) {
+    async login(data) {
       return new Promise((resolve, reject) => {
-        authApi.login({ username, password }).then((res) => {
+        authApi.login(data).then((res) => {
           // update pinia state
           this.token = res.data;
 
