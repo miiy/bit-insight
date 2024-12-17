@@ -76,7 +76,9 @@ impl Service {
                 token_type: "Bearer".to_string(),
                 access_token: token,
                 expires_in: jwt.expires_in,
-                user: AuthenticatedUser { username: user.username },
+                user: AuthenticatedUser {
+                    username: user.username,
+                },
             });
         }
         Err(AuthError::WrongPassword)

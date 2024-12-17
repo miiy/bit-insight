@@ -4,4 +4,5 @@ mod index;
 pub mod post;
 mod profile;
 pub mod route;
+mod setting;
 mod user;

@@ -8,7 +8,7 @@ debug = false
 addrs = "127.0.0.1:8080"
 
 [database]
-url = "mysql://root:123456@127.0.0.1:3306/rust_api"
+url = "mysql://root:123456@127.0.0.1:3306/bit_insight"
 
 [redis]
 url = "redis://127.0.0.1:6379"
