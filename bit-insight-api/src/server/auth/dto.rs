@@ -26,10 +26,10 @@ pub struct LoginResponse {
     pub token_type: String,
     pub access_token: String,
     pub expires_in: u32,
-    pub user: AuthenticatedUser,
+    pub user: UserInfo,
 }
 
 #[derive(Debug, Serialize)]
-pub struct AuthenticatedUser {
+pub struct UserInfo {
     pub username: String,
 }

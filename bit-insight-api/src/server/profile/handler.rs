@@ -1,6 +1,6 @@
 use super::{error::ProfileError, service::Service};
 use crate::error::APIError;
-use crate::jwt::AuthenticatedUser;
+use crate::auth::provider::AuthenticatedUser;
 use crate::AppState;
 use actix_web::{web, Error, HttpResponse};
 

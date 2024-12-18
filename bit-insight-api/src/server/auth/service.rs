@@ -1,8 +1,8 @@
-use super::dto::{LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, AuthenticatedUser};
+use super::dto::*;
 use super::error::AuthError;
 use super::model::{User, UserStatus};
 use super::password;
-use crate::jwt::JWT;
+use crate::auth::jwt::JWT;
 use sqlx::MySqlPool;
 use time::OffsetDateTime;
 
@@ -76,7 +76,7 @@ impl Service {
                 token_type: "Bearer".to_string(),
                 access_token: token,
                 expires_in: jwt.expires_in,
-                user: AuthenticatedUser {
+                user: UserInfo {
                     username: user.username,
                 },
             });

@@ -7,11 +7,12 @@ use actix_web::{
 };
 use futures_util::{future::LocalBoxFuture, FutureExt, TryFutureExt};
 
-use crate::error::{ErrorEntity, ErrorResponse};
-use crate::jwt::AuthenticatedUser;
-use crate::AppState;
+
 use actix_web::http::header::Header;
 use actix_web_httpauth::headers::authorization::{Authorization, Bearer};
+
+use crate::{auth::provider::AuthenticatedUser, error::{ErrorEntity, ErrorResponse}};
+use crate::AppState;
 
 // There are two steps in middleware processing.
 // 1. Middleware initialization, middleware factory gets called with
@@ -72,11 +73,8 @@ where
                     },
                 };
                 return Box::pin(async move {
-                    Ok(req.into_response(
-                        HttpResponse::BadRequest()
-                            .json(resp)
-                            .map_into_right_body(),
-                    ))
+                    Ok(req
+                        .into_response(HttpResponse::BadRequest().json(resp).map_into_right_body()))
                 });
             }
         };
@@ -102,9 +100,11 @@ where
         };
 
         // extract the user from the token
-        let user = AuthenticatedUser {
-            username: token_data.claims.sub,
-            user_id: 0,
+        let username = token_data.claims.sub;
+        // let user = app_state.auth_provider.get_user(username);
+        let user = AuthenticatedUser{
+            id: 123,
+            username: "test".to_string(),
         };
         // insert authenticated user into the request extensions
         req.extensions_mut().insert(user);

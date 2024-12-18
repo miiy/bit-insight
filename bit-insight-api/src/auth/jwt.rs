@@ -9,20 +9,10 @@ pub struct Claims {
     pub exp: i64,
 }
 
-#[derive(Debug, Serialize, Clone)]
-pub struct AuthenticatedUser {
-    pub username: String,
-    pub user_id: u64,
-}
-
 #[derive(Debug, Clone)]
 pub struct JWT {
     pub secret: String,
     pub expires_in: u32,
-}
-
-pub enum JWTError {
-    DecodeError { source: jsonwebtoken::errors::Error },
 }
 
 impl JWT {
@@ -53,6 +43,10 @@ impl JWT {
             &Validation::default(),
         )
     }
+}
+
+pub enum JWTError {
+    DecodeError { source: jsonwebtoken::errors::Error },
 }
 
 #[cfg(test)]

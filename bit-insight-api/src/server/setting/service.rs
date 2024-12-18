@@ -1,17 +1,19 @@
 use super::dto::*;
 use super::error::SettingError;
 use super::model::{Setting, SettingValuePush};
-use sqlx::MySqlPool;
 use serde_json::Value;
+use sqlx::MySqlPool;
 
 pub struct Service;
 
 impl Service {
-
     const SETTING_PUSH_KEY: &str = "push";
 
-    pub async fn detail(user_id: u64, key: &str, pool: &MySqlPool) -> Result<DetailResponse, SettingError> {
-
+    pub async fn detail(
+        user_id: u64,
+        key: &str,
+        pool: &MySqlPool,
+    ) -> Result<DetailResponse, SettingError> {
         let setting_option = Setting::find(&pool, user_id, key).await?;
 
         if let Some(setting) = setting_option {
@@ -26,9 +28,7 @@ impl Service {
                     return Err(SettingError::KeyNotFound(key.to_string()));
                 }
             };
-            Ok(DetailResponse {
-                value: value,
-            })
+            Ok(DetailResponse { value: value })
         }
     }
 
@@ -51,7 +51,7 @@ impl Service {
             }
             _ => {
                 return Err(SettingError::KeyNotFound(key.to_string()));
-            },
+            }
         };
 
         let setting_option = Setting::find(&pool, user_id, key).await?;
