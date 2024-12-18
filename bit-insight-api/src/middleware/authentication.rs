@@ -59,7 +59,28 @@ where
         let app_state = req.app_data::<web::Data<AppState>>().unwrap();
 
         // parse the authorization header
-        let schema = Authorization::<Bearer>::parse(&req).unwrap();
+        let schema_result = Authorization::<Bearer>::parse(&req);
+        let schema = match schema_result {
+            Ok(schema) => schema,
+            Err(e) => {
+                // invalid Header provided
+                // println!("{}", e);
+                let resp = ErrorResponse {
+                    error: ErrorEntity {
+                        code: 400,
+                        message: e.to_string(),
+                    },
+                };
+                return Box::pin(async move {
+                    Ok(req.into_response(
+                        HttpResponse::BadRequest()
+                            .json(resp)
+                            .map_into_right_body(),
+                    ))
+                });
+            }
+        };
+
         let token = schema.as_ref().token();
         let token_data = match app_state.jwt.decode(token) {
             Ok(token_data) => token_data,
@@ -83,6 +104,7 @@ where
         // extract the user from the token
         let user = AuthenticatedUser {
             username: token_data.claims.sub,
+            user_id: 0,
         };
         // insert authenticated user into the request extensions
         req.extensions_mut().insert(user);

@@ -1,4 +1,5 @@
 use super::model::Setting;
+use serde_json::Value;
 use sqlx::mysql::MySqlPool;
 use time::OffsetDateTime;
 
@@ -25,7 +26,7 @@ impl Setting {
         pool: &MySqlPool,
         user_id: u64,
         key: &str,
-        value: &str,
+        value: Value,
     ) -> Result<u64, sqlx::Error> {
         sqlx::query(
             "INSERT INTO `user_settings` (`user_id`, `key`, `value`, `created_at`, `updated_at`)
@@ -46,7 +47,7 @@ impl Setting {
         pool: &MySqlPool,
         user_id: u64,
         key: &str,
-        value: &str,
+        value: Value,
     ) -> Result<u64, sqlx::Error> {
         sqlx::query(
             "

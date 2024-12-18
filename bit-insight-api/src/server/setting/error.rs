@@ -13,8 +13,10 @@ pub enum SettingError {
     Database { source: sqlx::Error },
     #[display("redis error: {source}")]
     Redis { source: RedisError },
-    #[display("user not found")]
+    #[display("setting not found")]
     NotFound,
+    #[display("key not found: {_0}")]
+    KeyNotFound(String),
 }
 
 impl SettingError {
@@ -25,6 +27,7 @@ impl SettingError {
             Self::Database { .. } => 10003,
             Self::Redis { .. } => 10004,
             Self::NotFound => 10005,
+            Self::KeyNotFound(_) => 10006,
         }
     }
 }
@@ -51,6 +54,12 @@ impl From<RedisError> for SettingError {
     }
 }
 
+impl From<serde_json::Error> for SettingError {
+    fn from(from: serde_json::Error) -> SettingError {
+        SettingError::Service(from.to_string())
+    }
+}
+
 impl From<SettingError> for APIError {
     fn from(from: SettingError) -> APIError {
         let e = ErrorEntity {
@@ -63,6 +72,7 @@ impl From<SettingError> for APIError {
             | SettingError::Database { .. }
             | SettingError::Redis { .. } => APIError::InternalError(e),
             SettingError::NotFound => APIError::NotFound(e),
+            SettingError::KeyNotFound(_) => APIError::NotFound(e),
         }
     }
 }

@@ -1,4 +1,3 @@
-use crate::jwt::AuthenticatedUser;
 use serde::{Deserialize, Serialize};
 
 // register
@@ -28,4 +27,9 @@ pub struct LoginResponse {
     pub access_token: String,
     pub expires_in: u32,
     pub user: AuthenticatedUser,
+}
+
+#[derive(Debug, Serialize)]
+pub struct AuthenticatedUser {
+    pub username: String,
 }

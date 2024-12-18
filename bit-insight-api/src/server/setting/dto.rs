@@ -1,20 +1,11 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
+use serde_json::Value;
 
 // setting
-#[derive(Debug, Deserialize)]
-pub struct DetailRequest {
-    pub key: String,
-}
 
 #[derive(Debug, Serialize)]
 pub struct DetailResponse {
-    pub value: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct UpdateRequest {
-    pub key: String,
-    pub value: String,
+    pub value: Value,
 }
 
 #[derive(Debug, Serialize)]

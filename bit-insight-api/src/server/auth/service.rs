@@ -1,8 +1,8 @@
-use super::dto::{LoginRequest, LoginResponse, RegisterRequest, RegisterResponse};
+use super::dto::{LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, AuthenticatedUser};
 use super::error::AuthError;
 use super::model::{User, UserStatus};
 use super::password;
-use crate::jwt::{AuthenticatedUser, JWT};
+use crate::jwt::JWT;
 use sqlx::MySqlPool;
 use time::OffsetDateTime;
 

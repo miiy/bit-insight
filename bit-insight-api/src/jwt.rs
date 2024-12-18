@@ -12,6 +12,7 @@ pub struct Claims {
 #[derive(Debug, Serialize, Clone)]
 pub struct AuthenticatedUser {
     pub username: String,
+    pub user_id: u64,
 }
 
 #[derive(Debug, Clone)]

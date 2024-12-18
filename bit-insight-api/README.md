@@ -72,7 +72,7 @@ Post: create, update, delete, detail, list
 create database
 
 ```sql
-CREATE DATABASE rust_api DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE bit_insight DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 migrate
