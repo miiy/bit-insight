@@ -1,6 +1,6 @@
 use super::{service::Service, validate::validate_key};
-use crate::error::APIError;
 use crate::auth::provider::AuthenticatedUser;
+use crate::error::APIError;
 use crate::AppState;
 use actix_web::{web, Error, HttpResponse};
 use serde_json::Value;

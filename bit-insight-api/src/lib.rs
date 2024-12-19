@@ -1,8 +1,8 @@
+pub mod auth;
 pub mod config;
 pub mod db;
 pub mod error;
 pub mod json_config;
-pub mod auth;
 pub mod middleware;
 pub mod pagination;
 pub mod server;
@@ -10,7 +10,7 @@ pub mod server;
 use crate::auth::provider_default::DefaultAuthenticationProvider;
 
 #[derive(Clone)]
-pub struct AppState{
+pub struct AppState {
     pub db: sqlx::MySqlPool,
     pub redis: redis::Client,
     pub jwt: auth::jwt::JWT,
@@ -29,7 +29,8 @@ impl AppState {
         let jwt = auth::jwt::JWT::new(c.jwt.secret.clone(), c.jwt.expires_in);
 
         // auth provider
-        let auth_provider = auth::provider_default::DefaultAuthenticationProvider::new(pool.clone(), redis.clone());
+        let auth_provider =
+            auth::provider_default::DefaultAuthenticationProvider::new(pool.clone(), redis.clone());
 
         Self {
             db: pool,

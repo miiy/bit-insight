@@ -1,4 +1,4 @@
-use super::provider::{AuthenticationProvider, AuthenticatedUser, ProviderError};
+use super::provider::{AuthenticatedUser, AuthenticationProvider, ProviderError};
 
 #[derive(Clone)]
 pub struct DefaultAuthenticationProvider {
@@ -26,7 +26,6 @@ impl AuthenticationProvider for DefaultAuthenticationProvider {
         .await?;
 
         if let Some(row) = row {
-
             Ok(AuthenticatedUser {
                 id: row.0,
                 username: row.1,
@@ -35,5 +34,4 @@ impl AuthenticationProvider for DefaultAuthenticationProvider {
             Err(ProviderError::UserNotFound)
         }
     }
-
 }
