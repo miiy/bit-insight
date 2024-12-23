@@ -1,6 +1,11 @@
 <template>
-    <div>
-        <h1>Detail</h1>
+    <div class="post-detail-page">
+        <el-row>
+            <el-col :span="24">
+                <h1>title</h1>
+                <div>content</div>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -9,4 +14,7 @@
 </script>
 
 <style scoped>
+.post-detail-page {
+  max-width: 600px;
+}
 </style>

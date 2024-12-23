@@ -23,7 +23,7 @@ impl Service {
             return Err(AuthError::EmailAlreadyExists);
         }
 
-        let hashed = password::bcrypt_hash(&req.password)?;
+        let hashed = password::bcrypt_hash(&req.password, password::DEFAULT_COST)?;
         let user = User {
             id: 0,
             username: req.username,
@@ -76,9 +76,6 @@ impl Service {
                 token_type: "Bearer".to_string(),
                 access_token: token,
                 expires_in: jwt.expires_in,
-                user: UserInfo {
-                    username: user.username,
-                },
             });
         }
         Err(AuthError::WrongPassword)
@@ -88,6 +85,10 @@ impl Service {
         if req.username.is_empty() || req.password.is_empty() {
             return Err(AuthError::InvalidArgument("".to_string()));
         }
+        Ok(())
+    }
+
+    pub async fn logout(_pool: &MySqlPool) -> Result<(), AuthError> {
         Ok(())
     }
 }

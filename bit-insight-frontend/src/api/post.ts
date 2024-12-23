@@ -1,8 +1,8 @@
 import request from '../utils/request';
 
 const postApi = {
-  list: () => {
-    return request.get('/api/v1/posts');
+  list: (params) => {
+    return request.get('/api/v1/posts', { params });
   },
   detail: (id) => {
     return request.get(`/api/v1/posts/${id}`);

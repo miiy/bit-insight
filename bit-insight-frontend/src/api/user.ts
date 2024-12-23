@@ -1,8 +1,8 @@
 import request from '../utils/request';
 
 const userApi = {
-  profile: () => {
-    return request.get('/api/v1/users/profile');
+  info: (id) => {
+    return request.get(`/api/v1/users/${id}`);
   },
 };
 

@@ -20,19 +20,24 @@ const router = createRouter({
       component: () => import('../views/auth/RegisterView.vue'),
     },
     {
-      path: '/post',
-      name: 'post',
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/setting/SettingView.vue'),
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/profile/ProfileView.vue'),
+    },
+    {
+      path: '/posts',
+      name: 'posts',
       component: () => import('../views/post/ListView.vue'),
     },
     {
-      path: '/post/:id',
-      name: 'post-detail',
+      path: '/posts/:id',
+      name: 'PostDetail',
       component: () => import('../views/post/DetailView.vue'),
-    },
-    {
-      path: '/setting',
-      name: 'setting',
-      component: () => import('../views/setting/SettingView.vue'),
     },
     {
       path: '/about',

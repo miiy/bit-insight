@@ -7,6 +7,7 @@ pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/v1/auth")
             .service(web::resource("/register").route(web::post().to(handler::register)))
-            .service(web::resource("/login").route(web::post().to(handler::login))),
+            .service(web::resource("/login").route(web::post().to(handler::login)))
+            .service(web::resource("/logout").route(web::post().to(handler::logout))),
     );
 }

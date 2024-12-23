@@ -1,28 +1,31 @@
 <template>
-<el-form
-    ref="ruleFormRef"
-    style="max-width: 600px"
-    :model="ruleForm"
-    status-icon
-    :rules="rules"
-    label-width="auto"
-    class="demo-ruleForm"
-  >
-    <div class="text-center text-2xl font-bold">Push</div>
-    <div>Your push url: {{ pushUrl }}</div>
-    <el-form-item label="push_token" prop="push_token">
-      <el-input v-model="ruleForm.push_token" type="text" />
-    </el-form-item>
+  <div class="setting-page">
+    <el-form
+      ref="ruleFormRef"
+      :model="ruleForm"
+      status-icon
+      :rules="rules"
+      label-width="auto"
+      class="demo-ruleForm"
+    >
+      <div class="text-center text-2xl font-bold">Push</div>
+      <el-form-item label="push url" prop="push url">
+        <el-input v-model="ruleForm.push_url" type="text" disabled />
+      </el-form-item>
+      <el-form-item label="push_token" prop="push_token">
+        <el-input v-model="ruleForm.push_token" type="text" />
+      </el-form-item>
 
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(ruleFormRef)">
-        Save
-      </el-button>
-    </el-form-item>
-  </el-form>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm(ruleFormRef)">
+          Save
+        </el-button>
+      </el-form-item>
+    </el-form>
+</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import settingApi from '@/api/setting';
@@ -30,6 +33,7 @@ import settingApi from '@/api/setting';
 const ruleFormRef = ref<FormInstance>()
 
 const ruleForm = reactive<RuleForm>({
+  push_url: 'https://api.test.test/',
   push_token: '',
 })
 
@@ -52,4 +56,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 </script>
 
 <style scoped>
+.setting-page {
+  max-width: 600px;
+}
 </style>

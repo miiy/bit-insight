@@ -25,3 +25,11 @@ pub async fn login(
         .map_err(APIError::from)?;
     Ok(HttpResponse::Ok().json(resp))
 }
+
+// POST /auth/logout
+pub async fn logout(
+    app_state: web::Data<AppState>,
+) -> Result<HttpResponse, Error> {
+    Service::logout(&app_state.db).await.map_err(APIError::from)?;
+    Ok(HttpResponse::Ok().json(()))
+}

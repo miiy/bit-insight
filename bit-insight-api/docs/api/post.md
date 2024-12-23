@@ -66,8 +66,8 @@ CREATE PROCEDURE InsertPosts(num_posts INT)
 BEGIN
     DECLARE i INT DEFAULT 1;
     WHILE i <= num_posts DO
-        INSERT INTO `rust_api`.`posts` (category_id, title, author, content, created_at, updated_at)
-        VALUES (1, CONCAT('title', i), CONCAT('admin', i), CONCAT('content', i), NOW(), NOW());
+        INSERT INTO `bit_insight`.`posts` (category_id, title, author, source, source_url, thumbnail, summary, content, status, created_at, updated_at)
+        VALUES (1, CONCAT('title', i), 'admin', CONCAT('source', i), CONCAT('source_url', i), CONCAT('thumbnail', i), CONCAT('summary', i), CONCAT('content', i), 1, NOW(), NOW());
         SET i = i + 1;
     END WHILE;
 END //
