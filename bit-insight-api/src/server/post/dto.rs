@@ -27,7 +27,6 @@ pub struct ListResponseItem {
 }
 
 // detail
-
 #[derive(Debug, Serialize)]
 pub struct DetailResponse {
     pub id: u64,
@@ -89,3 +88,21 @@ pub struct UpdateResponse {
 // json: {}
 #[derive(Debug, Serialize)]
 pub struct DeleteResponse {}
+
+// push
+#[derive(Debug, Deserialize)]
+pub struct PushRequest {
+    pub category_id: u64,
+    pub title: String,
+    pub author: String,
+    pub source: String,
+    pub source_url: String,
+    pub thumbnail: String,
+    pub summary: String,
+    pub content: String,
+}
+
+#[derive(Debug, Serialize)]
+pub struct PushResponse {
+    pub id: u64,
+}

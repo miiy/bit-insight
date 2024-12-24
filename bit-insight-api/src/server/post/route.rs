@@ -6,6 +6,7 @@ use actix_web::web;
 // POST /posts
 // PUT /posts/{id}
 // DELETE /posts/{id}
+// POST /posts/push
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/v1/posts")
@@ -19,6 +20,7 @@ pub fn init_routes(cfg: &mut web::ServiceConfig) {
                     .route(web::get().to(handler::detail))
                     .route(web::put().to(handler::update))
                     .route(web::delete().to(handler::delete)),
-            ),
+            )
+            .service(web::resource("/push").route(web::post().to(handler::push))),
     );
 }

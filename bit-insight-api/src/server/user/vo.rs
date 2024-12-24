@@ -5,7 +5,6 @@ use time::OffsetDateTime;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserResponse {
-    pub id: u64,
     pub username: String,
     pub status: i8,
     #[serde(with = "time::serde::iso8601")]

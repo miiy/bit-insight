@@ -1,4 +1,5 @@
 use super::service::Service;
+use super::vo::UserResponse;
 use crate::error::APIError;
 use crate::AppState;
 use actix_web::{web, Error, HttpResponse};
@@ -11,5 +12,12 @@ pub async fn user(
     let resp = Service::user(&username, &app_state.db)
         .await
         .map_err(APIError::from)?;
+
+    let resp = UserResponse {
+        username: resp.username,
+        status: resp.status,
+        created_at: resp.created_at,
+        updated_at: resp.updated_at,
+    };
     Ok(HttpResponse::Ok().json(resp))
 }

@@ -4,4 +4,5 @@ mod handler;
 mod model;
 mod repository;
 pub mod route;
-mod service;
+pub mod service;
+mod vo;

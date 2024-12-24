@@ -20,20 +20,11 @@ request.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token.token_type + ' ' + token.access_token;
     }
-    // const user = store.getters.user
-    // if (token.access_token && !user.name) {
-    //   console.log('get user')
-    //   store.dispatch('getUser').then(resp => {
-    //     console.log('set user' + resp.data.name)
-    //   }).catch(err => {
-    //     console.log(err)
-    //     router.push({ name: 'Login' })
-    //   })
-    // }
     return config;
   },
   function (error) {
     // Do something with request error
+    console.log(error)
     return Promise.reject(error);
   }
 );
@@ -48,6 +39,7 @@ request.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    console.log(error)
     return Promise.reject(error.response);
   }
 );

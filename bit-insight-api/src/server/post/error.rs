@@ -7,6 +7,8 @@ use std::error::Error;
 pub enum PostError {
     #[display("params error: {_0}")]
     Params(String),
+    #[display("unauthorized")]
+    Unauthorized,
     #[display("service error: {_0}")]
     Service(String),
     #[display("database error: {source}")]
@@ -21,10 +23,11 @@ impl PostError {
     pub fn code(&self) -> i32 {
         match self {
             Self::Params(_) => 10001,
-            Self::Service(_) => 10002,
-            Self::Database { .. } => 10003,
-            Self::Redis { .. } => 10004,
-            Self::NotFound => 10005,
+            Self::Unauthorized => 10002,
+            Self::Service(_) => 10003,
+            Self::Database { .. } => 10004,
+            Self::Redis { .. } => 10005,
+            Self::NotFound => 10006,
         }
     }
 }
@@ -59,6 +62,7 @@ impl From<PostError> for APIError {
         };
         match from {
             PostError::Params(_) => APIError::BadRequest(e),
+            PostError::Unauthorized => APIError::Unauthorized(e),
             PostError::Service(_) | PostError::Database { .. } | PostError::Redis { .. } => {
                 APIError::InternalError(e)
             }

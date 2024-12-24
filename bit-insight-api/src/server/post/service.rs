@@ -121,4 +121,27 @@ impl Service {
         let _ra = Post::soft_delete(&pool, id).await?;
         Ok(DeleteResponse {})
     }
+
+    pub async fn push(req: PushRequest, pool: &MySqlPool) -> Result<PushResponse, PostError> {
+        let now = OffsetDateTime::now_utc();
+        let post = Post {
+            id: 0,
+            user_id: 0,
+            category_id: req.category_id,
+            title: req.title,
+            author: req.author,
+            source: req.source,
+            source_url: req.source_url,
+            thumbnail: req.thumbnail,
+            summary: req.summary,
+            content: req.content,
+            status: PostStatus::Published.as_i8(),
+            created_at: Some(now),
+            updated_at: Some(now),
+        };
+        let post_id = Post::create(&pool, &post).await?;
+
+        let resp = PushResponse { id: post_id };
+        Ok(resp)
+    }
 }
