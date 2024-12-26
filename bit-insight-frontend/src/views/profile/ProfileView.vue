@@ -1,11 +1,21 @@
 <template>
     <div>
-        <h1>Profile</h1>
+        hello, {{ profile.name }}
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref } from 'vue'
+import profileApi from '@/api/profile'
 
+const profile = ref({})
+
+const getProfile = async () => {
+    const resp = await profileApi.profile()
+    console.log(resp)
+}
+
+getProfile()
 </script>
 
 <style scoped>

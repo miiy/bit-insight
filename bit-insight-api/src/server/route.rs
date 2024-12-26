@@ -1,7 +1,8 @@
 use super::auth;
 use super::health;
 use super::index;
-use super::post;
+use super::article;
+use super::material;
 use super::profile;
 use super::setting;
 use super::user;
@@ -16,7 +17,8 @@ pub fn config_api(cfg: &mut web::ServiceConfig) {
     health::route::init_routes(cfg);
     auth::route::init_routes(cfg);
     user::route::init_routes(cfg);
-    post::route::init_routes(cfg);
+    article::route::init_routes(cfg);
+    material::route::init_routes(cfg);
 
     // private
     cfg.service(

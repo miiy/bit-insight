@@ -1,9 +1,9 @@
-## post api
+## article api
 
 create
 
 ```bash
-curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/v1/posts -d '
+curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/v1/articles -d '
 {
     "category_id": 1,
     "title": "title",
@@ -20,23 +20,23 @@ curl -X POST -H "Content-Type: application/json" http://127.0.0.1:8080/v1/posts 
 detail
 
 ```bash
-curl http://127.0.0.1:8080/v1/posts/1
-curl http://127.0.0.1:8080/v1/posts/0
-curl http://127.0.0.1:8080/v1/posts/-1
-curl http://127.0.0.1:8080/v1/posts/s
+curl http://127.0.0.1:8080/v1/articles/1
+curl http://127.0.0.1:8080/v1/articles/0
+curl http://127.0.0.1:8080/v1/articles/-1
+curl http://127.0.0.1:8080/v1/articles/s
 ```
 
 lists
 
 ```bash
-curl http://127.0.0.1:8080/v1/posts
-curl "http://127.0.0.1:8080/v1/posts?page=-1&page_size=s"
+curl http://127.0.0.1:8080/v1/articles
+curl "http://127.0.0.1:8080/v1/articles?page=-1&page_size=s"
 ```
 
 update
 
 ```bash
-curl -X PUT -H "Content-Type: application/json" http://127.0.0.1:8080/v1/posts/1 -d '
+curl -X PUT -H "Content-Type: application/json" http://127.0.0.1:8080/v1/articles/1 -d '
 {
     "category_id": 2,
     "title": "title1",
@@ -53,7 +53,7 @@ curl -X PUT -H "Content-Type: application/json" http://127.0.0.1:8080/v1/posts/1
 delete
 
 ```bash
-curl -X DELETE http://127.0.0.1:8080/v1/posts/1
+curl -X DELETE http://127.0.0.1:8080/v1/articles/1
 ```
 
 
@@ -62,11 +62,11 @@ curl -X DELETE http://127.0.0.1:8080/v1/posts/1
 ```bash
 DELIMITER //
 
-CREATE PROCEDURE InsertPosts(num_posts INT)
+CREATE PROCEDURE InsertArticles(num_articles INT)
 BEGIN
     DECLARE i INT DEFAULT 1;
-    WHILE i <= num_posts DO
-        INSERT INTO `bit_insight`.`posts` (category_id, title, author, source, source_url, thumbnail, summary, content, status, created_at, updated_at)
+    WHILE i <= num_articles DO
+        INSERT INTO `bit_insight`.`articles` (category_id, title, author, source, source_url, thumbnail, summary, content, status, created_at, updated_at)
         VALUES (1, CONCAT('title', i), 'admin', CONCAT('source', i), CONCAT('source_url', i), CONCAT('thumbnail', i), CONCAT('summary', i), CONCAT('content', i), 1, NOW(), NOW());
         SET i = i + 1;
     END WHILE;
@@ -74,5 +74,5 @@ END //
 
 DELIMITER ;
 
-CALL InsertPosts(50); -- insert 10 rows
+CALL InsertArticles(50); -- insert 10 rows
 ```

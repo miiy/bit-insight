@@ -1,14 +1,13 @@
 use super::dto;
-use super::error::PostError;
+use super::error::MaterialError;
 use super::service::Service;
 use crate::error::APIError;
-use crate::server::setting::service::Service as SettingService;
-use crate::server::user::service::Service as UserService;
+
 use crate::AppState;
 use actix_web::{web, HttpRequest, HttpResponse};
 use std::collections::HashMap;
 
-// GET /posts
+// GET /materials
 pub async fn list(
     req: HttpRequest,
     app_state: web::Data<AppState>,
@@ -29,7 +28,7 @@ pub async fn list(
     Ok(HttpResponse::Ok().json(resp))
 }
 
-// GET /posts/{id}
+// GET /materials/{id}
 pub async fn detail(
     path: web::Path<String>,
     app_state: web::Data<AppState>,
@@ -37,14 +36,14 @@ pub async fn detail(
     let id = path
         .into_inner()
         .parse::<u64>()
-        .map_err(|e| APIError::from(PostError::Params(e.to_string())))?;
+        .map_err(|e| APIError::from(MaterialError::Params(e.to_string())))?;
     let resp = Service::detail(id, &app_state.db)
         .await
         .map_err(APIError::from)?;
     Ok(HttpResponse::Ok().json(resp))
 }
 
-// POST /posts
+// POST /materials
 pub async fn create(
     params: web::Json<dto::CreateRequest>,
     app_state: web::Data<AppState>,
@@ -55,7 +54,7 @@ pub async fn create(
     Ok(HttpResponse::Created().json(resp))
 }
 
-// PUT /posts/{id}
+// PUT /materials/{id}
 pub async fn update(
     path: web::Path<String>,
     params: web::Json<dto::UpdateRequest>,
@@ -64,14 +63,14 @@ pub async fn update(
     let id = path
         .into_inner()
         .parse::<u64>()
-        .map_err(|e| APIError::from(PostError::Params(e.to_string())))?;
+        .map_err(|e| APIError::from(MaterialError::Params(e.to_string())))?;
     let resp = Service::update(id, params.into_inner(), &app_state.db)
         .await
         .map_err(APIError::from)?;
     Ok(HttpResponse::Ok().json(resp))
 }
 
-// DELETE /posts/{id}
+// DELETE /materials/{id}
 pub async fn delete(
     path: web::Path<String>,
     app_state: web::Data<AppState>,
@@ -79,14 +78,14 @@ pub async fn delete(
     let id = path
         .into_inner()
         .parse::<u64>()
-        .map_err(|e| APIError::from(PostError::Params(e.to_string())))?;
+        .map_err(|e| APIError::from(MaterialError::Params(e.to_string())))?;
     let resp = Service::delete(id, &app_state.db)
         .await
         .map_err(APIError::from)?;
     Ok(HttpResponse::Ok().json(resp))
 }
 
-// POST /posts/push
+// POST /materials/push
 pub async fn push(
     req: HttpRequest,
     params: web::Json<dto::PushRequest>,
@@ -96,34 +95,18 @@ pub async fn push(
     let push_username = req
         .headers()
         .get("Push-Username")
-        .ok_or_else(|| APIError::from(PostError::Unauthorized))?
+        .ok_or_else(|| APIError::from(MaterialError::Unauthorized))?
         .to_str()
-        .map_err(|_| APIError::from(PostError::Unauthorized))?;
+        .map_err(|_| APIError::from(MaterialError::Unauthorized))?;
+
     let push_token = req
         .headers()
         .get("Push-Token")
-        .ok_or_else(|| APIError::from(PostError::Unauthorized))?
+        .ok_or_else(|| APIError::from(MaterialError::Unauthorized))?
         .to_str()
-        .map_err(|_| APIError::from(PostError::Unauthorized))?;
+        .map_err(|_| APIError::from(MaterialError::Unauthorized))?;
 
-    let user = UserService::user(&push_username, &app_state.db)
-        .await
-        .map_err(|_| APIError::from(PostError::Unauthorized))?;
-
-    let setting = SettingService::detail(user.id, "push", &app_state.db)
-        .await
-        .map_err(|_| APIError::from(PostError::Unauthorized))?;
-    let setting_push_token = setting
-        .value
-        .get("push_token")
-        .and_then(|v| v.as_str())
-        .unwrap_or("");
-
-    if push_token != setting_push_token {
-        return Err(APIError::from(PostError::Unauthorized).into());
-    }
-
-    let resp = Service::push(params.into_inner(), &app_state.db)
+    let resp = Service::push(push_username, push_token, params.into_inner(), &app_state.db)
         .await
         .map_err(APIError::from)?;
     Ok(HttpResponse::Ok().json(resp))

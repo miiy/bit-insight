@@ -4,7 +4,7 @@ use redis::RedisError;
 use std::error::Error;
 
 #[derive(Debug, Display)]
-pub enum PostError {
+pub enum MaterialError {
     #[display("params error: {_0}")]
     Params(String),
     #[display("unauthorized")]
@@ -15,11 +15,11 @@ pub enum PostError {
     Database { source: sqlx::Error },
     #[display("redis error: {source}")]
     Redis { source: RedisError },
-    #[display("post not found")]
+    #[display("material not found")]
     NotFound,
 }
 
-impl PostError {
+impl MaterialError {
     pub fn code(&self) -> i32 {
         match self {
             Self::Params(_) => 10001,
@@ -32,7 +32,7 @@ impl PostError {
     }
 }
 
-impl Error for PostError {
+impl Error for MaterialError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match self {
             Self::Database { source: ref e } => Some(e),
@@ -42,31 +42,31 @@ impl Error for PostError {
     }
 }
 
-impl From<sqlx::Error> for PostError {
-    fn from(from: sqlx::Error) -> PostError {
-        PostError::Database { source: from }
+impl From<sqlx::Error> for MaterialError {
+    fn from(from: sqlx::Error) -> MaterialError {
+        MaterialError::Database { source: from }
     }
 }
 
-impl From<RedisError> for PostError {
-    fn from(from: RedisError) -> PostError {
-        PostError::Redis { source: from }
+impl From<RedisError> for MaterialError {
+    fn from(from: RedisError) -> MaterialError {
+        MaterialError::Redis { source: from }
     }
 }
 
-impl From<PostError> for APIError {
-    fn from(from: PostError) -> APIError {
+impl From<MaterialError> for APIError {
+    fn from(from: MaterialError) -> APIError {
         let e = ErrorEntity {
             code: from.code(),
             message: from.to_string(),
         };
         match from {
-            PostError::Params(_) => APIError::BadRequest(e),
-            PostError::Unauthorized => APIError::Unauthorized(e),
-            PostError::Service(_) | PostError::Database { .. } | PostError::Redis { .. } => {
+            MaterialError::Params(_) => APIError::BadRequest(e),
+            MaterialError::Unauthorized => APIError::Unauthorized(e),
+            MaterialError::Service(_) | MaterialError::Database { .. } | MaterialError::Redis { .. } => {
                 APIError::InternalError(e)
             }
-            PostError::NotFound => APIError::NotFound(e),
+            MaterialError::NotFound => APIError::NotFound(e),
         }
     }
 }

@@ -1,12 +1,12 @@
-use super::model::{Post, PostStatus};
+use super::model::{Article, ArticleStatus};
 use sqlx::mysql::MySqlPool;
 use time::OffsetDateTime;
 
-impl Post {
-    pub async fn create(pool: &MySqlPool, item: &Post) -> Result<u64, sqlx::Error> {
+impl Article {
+    pub async fn create(pool: &MySqlPool, item: &Article) -> Result<u64, sqlx::Error> {
         sqlx::query(
             "
-        INSERT INTO posts (`user_id`, `category_id`, `title`, `author`, `source`, `source_url`, `thumbnail`, `summary`, `content`, `status`, `created_at`, `updated_at`)
+        INSERT INTO articles (`user_id`, `category_id`, `title`, `author`, `source`, `source_url`, `thumbnail`, `summary`, `content`, `status`, `created_at`, `updated_at`)
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ",
         )
@@ -27,11 +27,11 @@ impl Post {
         .map(|x| x.last_insert_id())
     }
 
-    pub async fn find(pool: &MySqlPool, id: u64) -> Result<Option<Post>, sqlx::Error> {
-        let item: Option<Post> = sqlx::query_as(
+    pub async fn find(pool: &MySqlPool, id: u64) -> Result<Option<Article>, sqlx::Error> {
+        let item: Option<Article> = sqlx::query_as(
             "
         SELECT `id`, `category_id`, `title`, `author`, `source`, `source_url`, `thumbnail`, `summary`, `content`, `created_at`, `updated_at`
-        FROM `posts`
+        FROM `articles`
         WHERE `id`=? AND `deleted_at` IS NULL
         ",
         )
@@ -42,7 +42,7 @@ impl Post {
     }
 
     pub async fn find_count(pool: &MySqlPool) -> Result<i64, sqlx::Error> {
-        let count: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM posts WHERE deleted_at IS NULL")
+        let count: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM articles WHERE deleted_at IS NULL")
             .fetch_one(pool)
             .await?;
         Ok(count)
@@ -52,17 +52,17 @@ impl Post {
         pool: &MySqlPool,
         limit: u32,
         offset: u64,
-    ) -> Result<Vec<Post>, sqlx::Error> {
-        let items: Vec<Post> = sqlx::query_as(
+    ) -> Result<Vec<Article>, sqlx::Error> {
+        let items: Vec<Article> = sqlx::query_as(
             "
         SELECT `id`, `category_id`, `title`, `author`, `source`, `source_url`, `thumbnail`, `summary`, `content`, `status`, `created_at`, `updated_at`
-        FROM `posts`
+        FROM `articles`
         WHERE `status` = ? AND `deleted_at` IS NULL
         ORDER BY `created_at` DESC
         LIMIT ? OFFSET ?
         ",
         )
-        .bind(PostStatus::Published.as_i8())
+        .bind(ArticleStatus::Published.as_i8())
         .bind(limit)
         .bind(offset)
         .fetch_all(pool)
@@ -71,10 +71,10 @@ impl Post {
         Ok(items)
     }
 
-    pub async fn update(pool: &MySqlPool, item: &Post) -> Result<u64, sqlx::Error> {
+    pub async fn update(pool: &MySqlPool, item: &Article) -> Result<u64, sqlx::Error> {
         sqlx::query(
             "
-        UPDATE posts SET `category_id` = ?, `title` = ?, `author` = ?, `source` = ?, `source_url` = ?, `thumbnail` = ?, `summary` = ?, `content` = ?, `updated_at` = ?
+        UPDATE articles SET `category_id` = ?, `title` = ?, `author` = ?, `source` = ?, `source_url` = ?, `thumbnail` = ?, `summary` = ?, `content` = ?, `updated_at` = ?
         WHERE `id`=?
         ",
         )
@@ -96,7 +96,7 @@ impl Post {
     pub async fn soft_delete(pool: &MySqlPool, id: u64) -> Result<u64, sqlx::Error> {
         sqlx::query(
             "
-        UPDATE posts SET `deleted_at` = ?
+        UPDATE articles SET `deleted_at` = ?
         WHERE `id`=? AND `deleted_at` IS NULL
         ",
         )

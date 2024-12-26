@@ -1,11 +1,5 @@
 ## setting api
 
-set token
-
-```bash
-export TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiY29tcGFueSI6InJ1c3RfYXBpIiwiZXhwIjoxNzM0NTM3MTE2fQ.mMNmOUFyRdo-R9EwkFX3NWjskusGx8pgyLPIGKw9ZkE
-```
-
 get
 
 ```bash
