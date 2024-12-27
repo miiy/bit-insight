@@ -29,20 +29,32 @@ const router = createRouter({
       name: 'profile',
       component: () => import('../views/profile/ProfileView.vue'),
     },
+    // Materials
     {
-      path: '/posts',
-      name: 'posts',
-      component: () => import('../views/post/ListView.vue'),
+      path: '/materials',
+      name: 'materials',
+      component: () => import('../views/material/ListView.vue'),
     },
     {
-      path: '/posts/:id',
-      name: 'PostDetail',
-      component: () => import('../views/post/DetailView.vue'),
+      path: '/materials/:id',
+      name: 'MaterialDetail',
+      component: () => import('../views/material/DetailView.vue'),
+    },
+    // Articles
+    {
+      path: '/articles',
+      name: 'articles',
+      component: () => import('../views/article/ListView.vue'),
     },
     {
-      path: '/posts/create',
-      name: 'PostCreate',
-      component: () => import('../views/post/CreateView.vue'),
+      path: '/articles/:id',
+      name: 'ArticleDetail',
+      component: () => import('../views/article/DetailView.vue'),
+    },
+    {
+      path: '/articles/create',
+      name: 'ArticleCreate',
+      component: () => import('../views/article/CreateView.vue'),
     },
     {
       path: '/about',

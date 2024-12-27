@@ -1,10 +1,10 @@
 import request from '../utils/request';
 
 const settingApi = {
-  get: (key) => {
+  get: (key: string) => {
     return request.get(`/api/v1/settings/${key}`);
   },
-  update: (key, value) => {
+  update: (key: string, value: any) => {
     return request.put(`/api/v1/settings/${key}`, value);
   },
 };

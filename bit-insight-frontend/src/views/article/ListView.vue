@@ -1,4 +1,8 @@
 <template>
+  <div>
+    <el-button type="primary" @click="handleCreate">Create</el-button>
+  </div>
+
   <el-table :data="tableData" style="width: 100%">
     <el-table-column prop="category_id" label="Category" width="120" />
     <el-table-column prop="title" label="Title" width="120" />
@@ -29,12 +33,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import postApi from '@/api/post'
+import articleApi from '@/api/article'
 
 const router = useRouter()
 
 const handleClick = () => {
   console.log('click')
+}
+
+const handleCreate = () => {
+  router.push('/articles/create')
 }
 
 const page = ref(1)
@@ -54,7 +62,7 @@ const handleSizeChange = (size: number) => {
 }
 
 const getTableData = async () => {
-  const resp = await postApi.list({ page: page.value, per_page: per_page.value })
+  const resp = await articleApi.list({ page: page.value, per_page: per_page.value })
   console.log(resp)
   const res = resp.data
   page.value = res.page

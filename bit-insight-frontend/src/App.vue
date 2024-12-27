@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { RouterView } from 'vue-router'
 import Navbar from './views/layout/Navbar.vue'
 import Footer from './views/layout/Footer.vue'
@@ -19,5 +19,7 @@ import Footer from './views/layout/Footer.vue'
 </template>
 
 <style scoped>
-
+.el-header {
+  padding: 0;
+}
 </style>

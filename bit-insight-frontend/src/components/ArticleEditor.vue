@@ -1,17 +1,14 @@
 <template>
-    <div class="editor">
-        <ckeditor
-            v-model="data"
-            :editor="ClassicEditor"
-            :config="config"
-        />
-    </div>
+  <ckeditor
+    :editor="ClassicEditor"
+    :config="config"
+   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // https://ckeditor.com/docs/ckeditor5/latest/examples/builds-custom/full-featured-editor.html
 import { ref, computed } from 'vue';
-import { ClassicEditor, Essentials,
+import { ClassicEditor, Essentials, Title,
     FontSize, FontFamily, FontColor, FontBackgroundColor,
     Bold, Italic, Underline, Strikethrough, HorizontalLine, Code,
     RemoveFormat,
@@ -26,12 +23,10 @@ import { Ckeditor } from '@ckeditor/ckeditor5-vue';
 
 import 'ckeditor5/ckeditor5.css';
 
-const data = ref( '<p>Hello world!</p>' );
-
 const config = computed( () => {
     return {
         licenseKey: 'GPL', // Or 'GPL'.
-        plugins: [Essentials,
+        plugins: [Essentials, Title,
             Heading,
             FontSize, FontFamily, FontColor, FontBackgroundColor,
             Bold, Italic, Underline, Strikethrough, HorizontalLine, Code,
@@ -58,11 +53,17 @@ const config = computed( () => {
                 'sourceEditing', '|',
             ],
             shouldNotGroupWhenFull: true
-        }
+        },
+        title: {
+          placeholder: 'Title'
+        },
+        placeholder: 'Content'
     };
 } );
 </script>
 
-<style scoped>
-
+<style>
+.ck-editor__editable {
+  min-height: 500px;
+}
 </style>
