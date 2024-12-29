@@ -30,8 +30,8 @@
         </el-col>
       </el-row>
       <el-form-item>
-        <el-button type="primary" @click="searchCover(cover)">google search</el-button>
-        <el-button type="primary" @click="generateCover(cover)">generate</el-button>
+        <el-button type="primary" @click="searchCover()">google search</el-button>
+        <el-button type="primary" @click="generateCover()">generate</el-button>
       </el-form-item>
     </div>
   </div>
@@ -39,11 +39,22 @@
 
 <script lang="ts" setup>
 import ArticleEditor from '@/components/ArticleEditor.vue';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import type { FormInstance, FormRules } from 'element-plus'
 
-const ruleForm = ref({
+interface RuleForm {
+  title: string
+  content: string
+}
+
+const ruleForm = ref<RuleForm>({
     title: '',
     content: ''
+})
+
+const rules = reactive<FormRules<RuleForm>>({
+    title: [{ required: true, message: 'Please input the title', trigger: 'blur' }],
+    content: [{ required: true, message: 'Please input the content', trigger: 'blur' }],
 })
 
 const cover = ref('')

@@ -12,7 +12,7 @@ curl -X POST -H "Content-Type: application/json" -H "Push-Username: test" -H "Pu
     "source_url": "source_url",
     "thumbnail": "thumbnail",
     "summary": "summary",
-    "content": "content"
+    "content": "<div style=\"color: red;\">content</div>"
 }
 '
 ```

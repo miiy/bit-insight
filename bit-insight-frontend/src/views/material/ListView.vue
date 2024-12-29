@@ -30,18 +30,15 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import materialApi from '@/api/material'
+import type { MaterialApi } from '@/api/material'
 
 const router = useRouter()
-
-const handleClick = () => {
-  console.log('click')
-}
 
 const page = ref(1)
 const per_page = ref(10)
 const total_pages = ref(1)
 const total = ref(0)
-const tableData = ref([])
+const tableData = ref<MaterialApi.ListResponseItem[]>([])
 
 const handlePageChange = (pg: number) => {
   page.value = pg
@@ -54,9 +51,13 @@ const handleSizeChange = (size: number) => {
 }
 
 const getTableData = async () => {
-  const resp = await materialApi.list({ page: page.value, per_page: per_page.value })
-  console.log(resp)
+  const req: MaterialApi.ListRequest = {
+    page: page.value,
+    per_page: per_page.value,
+  }
+  const resp = await materialApi.list(req)
   const res = resp.data
+
   page.value = res.page
   per_page.value = res.per_page
   total_pages.value = res.total_pages
@@ -67,7 +68,7 @@ const getTableData = async () => {
 getTableData()
 
 const handleDetail = (row: any) => {
-  router.push({ name: 'PostDetail', params: { id: row.id } })
+  router.push({ name: 'MaterialDetail', params: { id: row.id } })
 }
 
 </script>

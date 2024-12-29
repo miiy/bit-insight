@@ -34,22 +34,18 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import articleApi from '@/api/article'
-
+import type { ArticleApi } from '@/api'
 const router = useRouter()
-
-const handleClick = () => {
-  console.log('click')
-}
-
-const handleCreate = () => {
-  router.push('/articles/create')
-}
 
 const page = ref(1)
 const per_page = ref(10)
 const total_pages = ref(1)
 const total = ref(0)
-const tableData = ref([])
+const tableData = ref<ArticleApi.ListResponseItem[]>([])
+
+const handleCreate = () => {
+  router.push('/articles/create')
+}
 
 const handlePageChange = (pg: number) => {
   page.value = pg
@@ -62,9 +58,13 @@ const handleSizeChange = (size: number) => {
 }
 
 const getTableData = async () => {
-  const resp = await articleApi.list({ page: page.value, per_page: per_page.value })
-  console.log(resp)
+  const req: ArticleApi.ListRequest = {
+    page: page.value,
+    per_page: per_page.value,
+  }
+  const resp = await articleApi.list(req)
   const res = resp.data
+
   page.value = res.page
   per_page.value = res.per_page
   total_pages.value = res.total_pages
@@ -75,7 +75,7 @@ const getTableData = async () => {
 getTableData()
 
 const handleDetail = (row: any) => {
-  router.push({ name: 'PostDetail', params: { id: row.id } })
+  router.push({ name: 'ArticleDetail', params: { id: row.id } })
 }
 
 </script>

@@ -29,6 +29,12 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useAuthStore } from '@/stores'
 import { useRouter } from 'vue-router'
+import type { AuthApi } from '@/api'
+
+interface RuleForm {
+  username: string
+  password: string
+}
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -49,11 +55,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      const loginReq = {
+      const req: AuthApi.LoginRequest = {
         username: ruleForm.username,
         password: ruleForm.password,
       }
-      authStore.login(loginReq).then((res) => {
+      authStore.login(req).then((res) => {
         router.push('/')
       }).catch((err) => {
         ElMessage({

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import authApi from '../api/auth';
 import profileApi from '../api/profile';
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore('authStore', {
   // state properties
   state: () => ({
     token: null,
